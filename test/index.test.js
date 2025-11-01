@@ -67,7 +67,7 @@ describe("PubSub Tests", () => {
     })
   });
 
-  test.skip("Subscribe more", (done) => {
+  test("Subscribe more", (done) => {
     socket.emit("subscribe", channelName2)
     socket.emit("subscribe", channelName3)
     socket.on("subscriber-id", (_channel, subscriberId)=> {
@@ -82,7 +82,7 @@ describe("PubSub Tests", () => {
   });
 
 
-  test.skip("List subscribers", (done) => {
+  test("List subscribers", (done) => {
     socket.emit("list-subscribers")
     socket.on("list-subscribers", (subscribers)=> {
       console.log("SUBSCRIBERS")
@@ -97,7 +97,7 @@ describe("PubSub Tests", () => {
     })
   });
 
-  test.skip("List channels", (done) => {
+  test("List channels", (done) => {
     socket.emit("list-channels")
     socket.on("list-channels", (channels)=> {
       console.log("CHANNELS")
