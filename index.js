@@ -20,7 +20,11 @@ class PubSub extends EventEmitter {
    * @param {string} message Message
    */
   publish(channel, message) {
-    // TODO should emit channel and message.
+    //   * @since v0.1.26
+    // just saw this emit function inside eventEmmiter iterface emit<K>(eventName: Key<K, T>, ...args: Args<K, T>): boolean;
+    // used similar way as per example showned in that file. 
+    // Not sure if its fully correct
+    this.emit(channel, message);
   }
 
   /**
@@ -78,12 +82,13 @@ class PubSub extends EventEmitter {
    */
   listSubscribers() {
     // TODO return list of subscribers
-   
-    const subscribers = []
-    for (const [key, value] of this.subscribers) { // Using the default iterator (could be `map.entries()` instead)
-      console.log(`The value for key ${key} is ${value}`);
-    }
 
+    // subscribers keys are subscriberId and thats string 
+    const subscriberIds = [];
+    for (const id of this.subscribers.keys()) {
+      subscriberIds.push(id);
+    }
+    return subscriberIds;
   }
 
   /**
@@ -92,6 +97,11 @@ class PubSub extends EventEmitter {
    */
   listChannels() {
     // TODO return list of channels
+    const channelsLists = [];
+    for (const channelName of this.channels.keys()) {
+      channelsLists.push(channelName);
+    }
+    return channelsLists;
   }
 
   /**
@@ -157,13 +167,23 @@ io.on("connection", (socket) => {
     // TODO
     // should:
     // - emit websocket message returning subscribers
+    const subscribersLists = ps.listSubscribers()
+    console.log(subscribersLists)
+    if (subscribersLists) {
+      socket.emit("list-subscribers", subscribersLists)
+    }
   });
 
   socket.on("list-channels", () => {
     // TODO
     // should:
     // - emit websocket message returning channels
+    const channels = ps.listChannels()
+    console.log(channels)
+    if (channels) {
+      socket.emit("list-channels", channels)
+    }
+    
   });
 
 });
-
